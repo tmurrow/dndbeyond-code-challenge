@@ -1,1 +1,111 @@
 /* You can add global styles to this file, and also import other style files */
+
+$background-file: url('assets/talent-calc-bg.png');
+$icon-file: url('assets/talent-icons-sprite.png');
+
+$icon-size: 50px;
+
+$text-color: white;
+
+body {
+  background-image: $background-file;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: $text-color;
+}
+
+.center {
+  text-align: center;
+}
+
+.rune-row {
+  margin: 50px;
+}
+
+.rune {
+  border: none;
+  background-image: $icon-file;
+  background-repeat: no-repeat;
+  height: $icon-size;
+  width: $icon-size;
+  margin: 0px 50px;
+  outline: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.active {
+    outline: 2px solid white;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+    box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+  }
+
+}
+
+.icon-stack {
+  background-position: 0px -50px;
+
+  &.active {
+    background-position: 0px 0px;
+  }
+}
+
+.icon-utensils {
+  background-position: -50px -50px;
+
+  &.active {
+    background-position: -50px 0px;
+  }
+}
+
+.icon-cake {
+  background-position: -100px -50px;
+
+  &.active {
+    background-position: -100px 0px;
+  }
+}
+
+.icon-crown {
+  background-position: -150px -50px;
+
+  &.active {
+    background-position: -150px 0px;
+  }
+}
+
+.icon-ship {
+  background-position: -200px -50px;
+
+  &.active {
+    background-position: -200px 0px;
+  }
+}
+
+.icon-scuba {
+  background-position: -250px -50px;
+
+  &.active {
+    background-position: -250px 0px;
+  }
+}
+
+.icon-bolt {
+  background-position: -300px -50px;
+
+  &.active {
+    background-position: -300px 0px;
+  }
+}
+
+.icon-skull {
+  background-position: -350px -50px;
+
+  &.active {
+    background-position: -350px 0px;
+  }
+}
