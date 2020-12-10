@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Rune } from './models/rune';
 
 @Component({
   selector: 'app-root',
@@ -11,27 +12,58 @@ export class AppComponent {
   currentPoints = this.totalPoints;
   talentPath = ['stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull'];
   talentPathSelected = [false, false, false, false, false, false, false, false];
+  runeList = [];
 
   ngOnInit() {
-
+    this.createRunes();
   }
 
-  isSelected(rune: string) {
-    return this.talentPathSelected[this.talentPath.indexOf(rune)];
+  isSelected(runeName: string) {
+    return this.getRune(runeName).selected;
   }
 
-  select(rune: string) {
-    if (this.currentPoints > 0 && this.talentPathSelected[this.talentPath.indexOf(rune)] == false) {
-        this.talentPathSelected[this.talentPath.indexOf(rune)] = true;
-        this.currentPoints = this.currentPoints - 1;
+  select(runeName: string) {
+    let rune: Rune = this.getRune(runeName);
+    let previousRune: Rune = this.getRune(rune.previousRune);
+    
+    if (this.currentPoints > 0 && !rune.selected && (previousRune === undefined || previousRune.selected )) {
+      rune.selected = true;
+      this.setRune(rune);
+      this.currentPoints -= rune.cost;
     }
   }
 
-  deselect(rune: string) {
-    this.talentPathSelected[this.talentPath.indexOf(rune)] = false;
-    if (this.currentPoints < this.totalPoints) {
-      this.currentPoints = this.currentPoints + 1;
+  deselect(runeName: string) {
+    let rune: Rune = this.getRune(runeName);
+    let nextRune: Rune = this.getRune(rune.nextRune);
+
+    if (rune.selected && (nextRune === undefined || !nextRune.selected)) {
+      rune.selected = false;
+      this.setRune(rune);
+      if (this.currentPoints < this.totalPoints) {
+        this.currentPoints += rune.cost;
+      }
     }
     return false;
+  }
+
+  createRunes() {
+    this.runeList.push(new Rune('stack', 1, '', 'utensils'));
+    this.runeList.push(new Rune('utensils', 1, 'stack', 'cake'));
+    this.runeList.push(new Rune('cake', 1, 'utensils', 'crown'));
+    this.runeList.push(new Rune('crown', 1, 'cake', ''));
+
+    this.runeList.push(new Rune('ship', 2, '', 'scuba'));
+    this.runeList.push(new Rune('scuba', 2, 'ship', 'bolt'));
+    this.runeList.push(new Rune('bolt', 2, 'scuba', 'skull'));
+    this.runeList.push(new Rune('skull', 2, 'bolt', ''));
+  }
+
+  getRune(className: string) {
+    return this.runeList.find(r => r.className === className);
+  }
+
+  setRune(updatedRune: Rune) {
+    this.runeList[this.runeList.indexOf(updatedRune)] = updatedRune;
   }
 }
