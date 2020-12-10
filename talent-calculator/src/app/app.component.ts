@@ -25,7 +25,7 @@ export class AppComponent {
   select(runeName: string) {
     let rune: Rune = this.getRune(runeName);
     let previousRune: Rune = this.getRune(rune.previousRune);
-    
+
     if (this.currentPoints > 0 && !rune.selected && (previousRune === undefined || previousRune.selected )) {
       rune.selected = true;
       this.setRune(rune);
@@ -57,6 +57,9 @@ export class AppComponent {
     this.runeList.push(new Rune('scuba', 2, 'ship', 'bolt'));
     this.runeList.push(new Rune('bolt', 2, 'scuba', 'skull'));
     this.runeList.push(new Rune('skull', 2, 'bolt', ''));
+    if (localStorage.getItem('runeList') === null) {
+      localStorage.setItem('runeList', this.runeList);
+    }
   }
 
   getRune(className: string) {
@@ -65,5 +68,6 @@ export class AppComponent {
 
   setRune(updatedRune: Rune) {
     this.runeList[this.runeList.indexOf(updatedRune)] = updatedRune;
+    localStorage.setItem('runeList', this.runeList);
   }
 }
