@@ -1,11 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Metamorphous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap');
 
 $background-file: url('assets/talent-calc-bg.png');
-$icon-file: url('assets/talent-icons-sprite.png');
 
+$icon-file: url('assets/talent-icons-sprite.png');
+$icons: 'stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull';
 $icon-size: 50px;
+$icon-border-width: 7px;
+
+$connection-length: 10%;
+$connection-static-length: 10%;
+$connection-width: 12px;
+$connection-length-offset: -($connection-length);
+$connection-static-length-offset: -80px;
+$connection-width-offset: -($connection-width / 2);
+$connection-color: rgb(66,66,66);
 
 $text-color: white;
+$header-font: 'Metamorphous', serif;
+$body-font: 'Ubuntu Condensed', sans-serif;
+$breakpoint: 768px;
+
+$active-gradient-highlight: rgba(36,58,78,1);
+$active-gradient-shadow: rgba(108,160,214,1);
+$inactive-gradient-highlight: rgba(66,66,66,1);
+$inactive-gradient-shadow: rgba(87,87,87,1);
+
+@mixin gradient-background ($shadow-color, $highlight-color) {
+  background: $shadow-color;
+  background: -webkit-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+  background: -o-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+  background: linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+}
+
+@mixin rune-connection ($is-active: false) {
+  content: '';
+  background-color: rgba($connection-color, .25);
+  border: 2px solid rgba($connection-color, .5);
+  position: absolute;
+  z-index: -1;
+  margin-left: $connection-length-offset;
+  margin-top: $connection-width-offset;
+  height: $connection-width;
+  width: $connection-length;
+  @if $is-active {
+    background-color: rgba($connection-color, .85);
+    border-color: rgba($connection-color, 1);
+    width: 0em;
+    transition: width 0.15s ease-out;
+  }
+
+  @media (max-width: $breakpoint) {
+    margin-left: $connection-width-offset;
+    margin-top: $connection-static-length-offset;
+    height: $connection-static-length;
+    width: $connection-width;
+    @if $is-active {
+      height: 0em;
+      transition: height 0.15s ease-out;
+    }
+  }
+}
 
 body {
   background-image: $background-file;
@@ -14,98 +70,150 @@ body {
   background-position: center;
   background-attachment: fixed;
   color: $text-color;
+  font-family: $body-font;
+}
+
+.title {
+  font-family: $header-font;
+  font-variant: small-caps;
+  font-weight: normal;
+}
+
+.subtitle {
+  font-weight: normal;
+  @media (max-width: $breakpoint) {
+    font-size: 1.2rem;
+  }
 }
 
 .center {
   text-align: center;
 }
 
-.rune-row {
-  margin: 50px;
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  @include flex-center;
+  flex-direction: column;
+  height: 100%;
+
+  .rune-tree {
+    @include flex-center;
+    flex-direction: column;
+    min-width: 50%;
+
+    @media (max-width: $breakpoint) {
+      height: 100%;
+      flex-direction: row;
+    }
+
+    .rune-path {
+      @include flex-center;
+      width: 100%;
+      justify-content: space-between;
+      margin: 1em 0em;
+      @media (max-width: $breakpoint) {
+        height: 50vh;
+        flex-direction: column;
+      }
+    }
+  }
 }
 
 .rune {
   border: none;
-  background-image: $icon-file;
-  background-repeat: no-repeat;
-  height: $icon-size;
-  width: $icon-size;
-  margin: 0px 50px;
-  outline: 0;
+  height: $icon-size + $icon-border-width;
+  width: $icon-size + $icon-border-width;
+  // margin: 20px;
+  border: 0em;
+  outline: 0em;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  @include gradient-background($inactive-gradient-shadow, $inactive-gradient-highlight);
 
   &:hover {
     cursor: pointer;
   }
 
   &.active {
-    outline: 2px solid white;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
-    box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.25);
+    @include gradient-background($active-gradient-shadow, $active-gradient-highlight);
+    // animation: shine 0.5s ease normal;
+    // animation-fill-mode: both;
+
+    &:not(:nth-child(2))::after {
+      @include rune-connection(false);
+      // width: $connection-length;
+      //
+      // @media (max-width: $breakpoint) {
+      //   width: $connection-width;
+      //   height: $connection-length;
+      // }
+    }
   }
 
-}
-
-.icon-stack {
-  background-position: 0px -50px;
-
-  &.active {
-    background-position: 0px 0px;
+  /* Connecting lines */
+  &:not(:nth-child(2))::before {
+    @include rune-connection(false);
   }
-}
 
-.icon-utensils {
-  background-position: -50px -50px;
-
-  &.active {
-    background-position: -50px 0px;
+  /* Animate progress */
+  &:not(:nth-child(2))::after {
+    @include rune-connection(true);
   }
-}
 
-.icon-cake {
-  background-position: -100px -50px;
-
-  &.active {
-    background-position: -100px 0px;
+  // Icon styles
+  [class^="icon-"] {
+    background-image: $icon-file;
+    background-repeat: no-repeat;
+    height: $icon-size;
+    width: $icon-size;
+    z-index: 1;
+    position: absolute;
+    margin-top: -25px;
+    margin-left: -25px;
   }
-}
 
-.icon-crown {
-  background-position: -150px -50px;
+  @each $icon in $icons {
+    $icon-index: index($icons, $icon)-1;
+    $icon-position: (-50 * $icon-index) * 1px;
+    .icon-#{$icon} {
+      background-position: $icon-position -50px;
+    }
 
-  &.active {
-    background-position: -150px 0px;
-  }
-}
-
-.icon-ship {
-  background-position: -200px -50px;
-
-  &.active {
-    background-position: -200px 0px;
-  }
-}
-
-.icon-scuba {
-  background-position: -250px -50px;
-
-  &.active {
-    background-position: -250px 0px;
+    &.active .icon-#{$icon},
+    &:hover .icon-#{$icon} {
+      background-position: $icon-position 0px;
+    }
   }
 }
 
-.icon-bolt {
-  background-position: -300px -50px;
-
-  &.active {
-    background-position: -300px 0px;
-  }
-}
-
-.icon-skull {
-  background-position: -350px -50px;
-
-  &.active {
-    background-position: -350px 0px;
-  }
-}
+// Animation
+// @keyframes shine {
+//   0% {
+//     background: linear-gradient(
+//       45deg,
+//       lightgrey 0%,
+//       lightgrey 40%,
+//       white 50%,
+//       lightgrey 60%,
+//       lightgrey 100%
+//     );
+//     background-size: 200% 200%;
+//     background-position: top right;
+//   }
+//   100% {
+//     background: linear-gradient(
+//       45deg,
+//       lightgrey 0%,
+//       lightgrey 40%,
+//       white 50%,
+//       lightgrey 60%,
+//       lightgrey 100%
+//     );
+//     background-size: 250% 250%;
+//     background-position: bottom left;
+//   }
+// }

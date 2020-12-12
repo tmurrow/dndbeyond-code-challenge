@@ -10,8 +10,6 @@ export class AppComponent {
   title = 'talent-calculator';
   totalPoints = 6;
   currentPoints = this.totalPoints;
-  talentPath = ['stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull'];
-  talentPathSelected = [false, false, false, false, false, false, false, false];
   runeList = [];
 
   ngOnInit() {
@@ -36,7 +34,6 @@ export class AppComponent {
   deselect(runeName: string) {
     let rune: Rune = this.getRune(runeName);
     let nextRune: Rune = this.getRune(rune.nextRune);
-
     if (rune.selected && (nextRune === undefined || !nextRune.selected)) {
       rune.selected = false;
       this.setRune(rune);
@@ -58,16 +55,16 @@ export class AppComponent {
     this.runeList.push(new Rune('bolt', 2, 'scuba', 'skull'));
     this.runeList.push(new Rune('skull', 2, 'bolt', ''));
     if (localStorage.getItem('runeList') === null) {
-      localStorage.setItem('runeList', this.runeList);
+      localStorage.setItem('runeList', JSON.stringify(this.runeList));
     }
   }
 
-  getRune(className: string) {
-    return this.runeList.find(r => r.className === className);
+  getRune(name: string) {
+    return this.runeList.find(r => r.name === name);
   }
 
   setRune(updatedRune: Rune) {
     this.runeList[this.runeList.indexOf(updatedRune)] = updatedRune;
-    localStorage.setItem('runeList', this.runeList);
+    localStorage.setItem('runeList', JSON.stringify(this.runeList));
   }
 }
