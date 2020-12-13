@@ -1,13 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Metamorphous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 
 $background-file: url('assets/talent-calc-bg.png');
 
 $icon-file: url('assets/talent-icons-sprite.png');
 $icons: 'stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull';
 $icon-size: 50px;
-$icon-border-width: 7px;
+$icon-border-width: 8px;
 
 $connection-length: 10%;
 $connection-static-length: 10%;
@@ -18,14 +17,23 @@ $connection-width-offset: -($connection-width / 2);
 $connection-color: rgb(66,66,66);
 
 $text-color: white;
-$header-font: 'Metamorphous', serif;
-$body-font: 'Ubuntu Condensed', sans-serif;
+$font-family: 'Open Sans', sans-serif;
 $breakpoint: 768px;
 
 $active-gradient-highlight: rgba(36,58,78,1);
 $active-gradient-shadow: rgba(108,160,214,1);
 $inactive-gradient-highlight: rgba(66,66,66,1);
 $inactive-gradient-shadow: rgba(87,87,87,1);
+
+.points-container {
+  background-color: rgba(0,0,0,.5);
+  border: 1px solid rgba(66,66,66, .25);
+  padding: 1em;
+}
+
+.points-label {
+  color: $active-gradient-highlight;
+}
 
 @mixin gradient-background ($shadow-color, $highlight-color) {
   background: $shadow-color;
@@ -34,7 +42,7 @@ $inactive-gradient-shadow: rgba(87,87,87,1);
   background: linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
 }
 
-@mixin rune-connection ($is-active: false) {
+@mixin rune-connection ($is-active: false, $is-animated: false) {
   content: '';
   background-color: rgba($connection-color, .25);
   border: 2px solid rgba($connection-color, .5);
@@ -47,6 +55,8 @@ $inactive-gradient-shadow: rgba(87,87,87,1);
   @if $is-active {
     background-color: rgba($connection-color, .85);
     border-color: rgba($connection-color, 1);
+  }
+  @if $is-animated {
     width: 0em;
     transition: width 0.15s ease-out;
   }
@@ -70,35 +80,32 @@ body {
   background-position: center;
   background-attachment: fixed;
   color: $text-color;
-  font-family: $body-font;
-}
-
-.title {
-  font-family: $header-font;
-  font-variant: small-caps;
-  font-weight: normal;
-}
-
-.subtitle {
-  font-weight: normal;
-  @media (max-width: $breakpoint) {
-    font-size: 1.2rem;
-  }
-}
-
-.center {
+  font-family: $font-family;
   text-align: center;
+}
+
+h2 {
+  font-weight: 400;
+}
+
+header {
+  background-color: rgba(66,66,66,.25);
 }
 
 @mixin flex-center {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .container {
   @include flex-center;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
+
+  @media (max-width: $breakpoint) {
+    flex-direction: column-reverse;
+  }
 
   .rune-tree {
     @include flex-center;
@@ -144,7 +151,7 @@ body {
     // animation-fill-mode: both;
 
     &:not(:nth-child(2))::after {
-      @include rune-connection(false);
+      @include rune-connection(true, false);
       // width: $connection-length;
       //
       // @media (max-width: $breakpoint) {
@@ -156,12 +163,12 @@ body {
 
   /* Connecting lines */
   &:not(:nth-child(2))::before {
-    @include rune-connection(false);
+    @include rune-connection(false, false);
   }
 
   /* Animate progress */
   &:not(:nth-child(2))::after {
-    @include rune-connection(true);
+    @include rune-connection(true, true);
   }
 
   // Icon styles
@@ -172,8 +179,8 @@ body {
     width: $icon-size;
     z-index: 1;
     position: absolute;
-    margin-top: -25px;
-    margin-left: -25px;
+    margin-top: ($icon-size/-2);
+    margin-left: ($icon-size/-2);
   }
 
   @each $icon in $icons {
