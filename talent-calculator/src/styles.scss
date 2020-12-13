@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 
 $background-file: url('assets/talent-calc-bg.png');
+$background-file-portrait: url('assets/talent-calc-bg-portrait.png');
 
 $icon-file: url('assets/talent-icons-sprite.png');
 $icons: 'stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull';
@@ -18,21 +19,20 @@ $connection-color: rgb(66,66,66);
 
 $text-color: white;
 $font-family: 'Open Sans', sans-serif;
-$breakpoint: 768px;
+$breakpoint-medium: 768px;
+$breakpoint-small: 480px;
 
 $active-gradient-highlight: rgba(36,58,78,1);
 $active-gradient-shadow: rgba(108,160,214,1);
 $inactive-gradient-highlight: rgba(66,66,66,1);
 $inactive-gradient-shadow: rgba(87,87,87,1);
 
-.points-container {
-  background-color: rgba(0,0,0,.5);
-  border: 1px solid rgba(66,66,66, .25);
-  padding: 1em;
-}
-
-.points-label {
-  color: $active-gradient-highlight;
+@mixin page-background {
+  background-image: $background-file;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 @mixin gradient-background ($shadow-color, $highlight-color) {
@@ -48,7 +48,6 @@ $inactive-gradient-shadow: rgba(87,87,87,1);
   border: 2px solid rgba($connection-color, .5);
   position: absolute;
   z-index: -1;
-  margin-left: $connection-length-offset;
   margin-top: $connection-width-offset;
   height: $connection-width;
   width: $connection-length;
@@ -61,9 +60,8 @@ $inactive-gradient-shadow: rgba(87,87,87,1);
     transition: width 0.15s ease-out;
   }
 
-  @media (max-width: $breakpoint) {
+  @media (max-width: $breakpoint-medium) {
     margin-left: $connection-width-offset;
-    margin-top: $connection-static-length-offset;
     height: $connection-static-length;
     width: $connection-width;
     @if $is-active {
@@ -73,23 +71,59 @@ $inactive-gradient-shadow: rgba(87,87,87,1);
   }
 }
 
+html,
 body {
-  background-image: $background-file;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow: auto;
+}
+
+body {
   color: $text-color;
   font-family: $font-family;
   text-align: center;
+  @include page-background;
+
+  @media (max-width: $breakpoint-medium) {
+    background-image: $background-file-portrait;
+  }
 }
 
 h2 {
-  font-weight: 400;
+  font-weight: 600;
+  margin: 0px;
 }
 
 header {
   background-color: rgba(66,66,66,.25);
+  margin: 1.2rem 1.2rem;
+  padding: .25rem;
+
+  @media (max-width: $breakpoint-medium) {
+    font-size: .8rem;
+  }
+
+  @media (max-width: $breakpoint-small) {
+    font-size: .7rem;
+  }
+}
+
+.points-container {
+  background-color: rgba(0,0,0,.5);
+  border: 1px solid rgba(66,66,66, .25);
+  padding: 1em;
+  margin: .5rem 4rem;
+  font-size: 1.2rem;
+
+  @media (max-width: $breakpoint-medium) {
+    font-size: 1rem;
+    margin: 0rem;
+  }
+}
+
+.points-label {
+  color: $active-gradient-highlight;
 }
 
 @mixin flex-center {
@@ -98,12 +132,12 @@ header {
   justify-content: center;
 }
 
-.container {
+.rune-calculator {
   @include flex-center;
   flex-direction: row;
-  height: 100%;
+  // height: 100%;
 
-  @media (max-width: $breakpoint) {
+  @media (max-width: $breakpoint-medium) {
     flex-direction: column-reverse;
   }
 
@@ -112,8 +146,8 @@ header {
     flex-direction: column;
     min-width: 50%;
 
-    @media (max-width: $breakpoint) {
-      height: 100%;
+    @media (max-width: $breakpoint-medium) {
+      // height: 100%;
       flex-direction: row;
     }
 
@@ -121,78 +155,79 @@ header {
       @include flex-center;
       width: 100%;
       justify-content: space-between;
-      margin: 1em 0em;
-      @media (max-width: $breakpoint) {
+      margin: 1.5rem 0rem;
+      @media (max-width: $breakpoint-medium) {
+        margin: 0rem 1.5rem;
         height: 50vh;
         flex-direction: column;
       }
-    }
-  }
-}
 
-.rune {
-  border: none;
-  height: $icon-size + $icon-border-width;
-  width: $icon-size + $icon-border-width;
-  // margin: 20px;
-  border: 0em;
-  outline: 0em;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  @include gradient-background($inactive-gradient-shadow, $inactive-gradient-highlight);
+      p {
+        font-size: .75rem;
+        @media (max-width: $breakpoint-medium) {
+          font-size: .6rem;
+        }
+      }
 
-  &:hover {
-    cursor: pointer;
-  }
+      .rune {
+        border: none;
+        min-height: $icon-size + $icon-border-width;
+        width: $icon-size + $icon-border-width;
+        border: 0em;
+        outline: 0em;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+        @include gradient-background($inactive-gradient-shadow, $inactive-gradient-highlight);
 
-  &.active {
-    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.25);
-    @include gradient-background($active-gradient-shadow, $active-gradient-highlight);
-    // animation: shine 0.5s ease normal;
-    // animation-fill-mode: both;
+        &:hover {
+          cursor: pointer;
+        }
 
-    &:not(:nth-child(2))::after {
-      @include rune-connection(true, false);
-      // width: $connection-length;
-      //
-      // @media (max-width: $breakpoint) {
-      //   width: $connection-width;
-      //   height: $connection-length;
-      // }
-    }
-  }
+        &.active {
+          box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.25);
+          @include gradient-background($active-gradient-shadow, $active-gradient-highlight);
+          // animation: shine 0.5s ease normal;
+          // animation-fill-mode: both;
 
-  /* Connecting lines */
-  &:not(:nth-child(2))::before {
-    @include rune-connection(false, false);
-  }
+          &:not(:last-child)::after {
+            @include rune-connection(true, false);
+          }
+        }
 
-  /* Animate progress */
-  &:not(:nth-child(2))::after {
-    @include rune-connection(true, true);
-  }
+        /* Connecting lines */
+        &:not(:last-child)::before {
+          @include rune-connection(false, false);
+        }
 
-  // Icon styles
-  [class^="icon-"] {
-    background-image: $icon-file;
-    background-repeat: no-repeat;
-    height: $icon-size;
-    width: $icon-size;
-    z-index: 1;
-    position: absolute;
-    margin-top: ($icon-size/-2);
-    margin-left: ($icon-size/-2);
-  }
+        /* Animate progress */
+        &:not(:last-child)::after {
+          @include rune-connection(true, true);
+        }
 
-  @each $icon in $icons {
-    $icon-index: index($icons, $icon)-1;
-    $icon-position: (-50 * $icon-index) * 1px;
-    .icon-#{$icon} {
-      background-position: $icon-position -50px;
-    }
+        // Icon styles
+        [class^="icon-"] {
+          background-image: $icon-file;
+          background-repeat: no-repeat;
+          height: $icon-size;
+          width: $icon-size;
+          z-index: 1;
+          position: absolute;
+          margin-top: ($icon-size/-2);
+          margin-left: ($icon-size/-2);
+        }
 
-    &.active .icon-#{$icon},
-    &:hover .icon-#{$icon} {
-      background-position: $icon-position 0px;
+        @each $icon in $icons {
+          $icon-index: index($icons, $icon)-1;
+          $icon-position: (-50 * $icon-index) * 1px;
+          .icon-#{$icon} {
+            background-position: $icon-position -50px;
+          }
+
+          &.active .icon-#{$icon},
+          &:hover .icon-#{$icon} {
+            background-position: $icon-position 0px;
+          }
+        }
+      }
     }
   }
 }

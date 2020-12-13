@@ -1,40 +1,33 @@
-<header>
-  <h2>TitanStar Legends - Rune Mastery Loadout Talent Calculator 9000</h2>
-</header>
-
 <div class="container">
+  <header>
+    <h2>TitanStar Legends - Rune Mastery Loadout Talent Calculator 9000</h2>
+  </header>
 
-  <div class="rune-tree">
+  <div class="rune-calculator">
 
-    <div class="rune-path">
-      <p>TALENT PATH 1</p>
-      <button class="rune" [ngClass]="{'active' : isSelected('stack')}" (click)="select('stack')" (contextmenu)="deselect('stack')"><span class="icon-stack"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('utensils')}" (click)="select('utensils')" (contextmenu)="deselect('utensils')"><span class="icon-utensils"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('cake')}" (click)="select('cake')" (contextmenu)="deselect('cake')"><span class="icon-cake"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('crown')}" (click)="select('crown')" (contextmenu)="deselect('crown')"><span class="icon-crown"></span></button>
+    <div class="rune-tree">
+
+      <div class="rune-path">
+        <p>TALENT PATH 1</p>
+        <button *ngFor="let rune of runePath1" class="rune" [ngClass]="{'active' : isSelected(rune.name)}" (click)="select(rune.name)" (contextmenu)="deselect(rune.name)">
+          <span [ngClass]="'icon-' + rune.name"></span>
+        </button>
+      </div>
+
+      <div class="rune-path">
+        <p>TALENT PATH 2</p>
+        <button *ngFor="let rune of runePath2" class="rune" [ngClass]="{'active' : isSelected(rune.name)}" (click)="select(rune.name)" (contextmenu)="deselect(rune.name)">
+          <span [ngClass]="'icon-' + rune.name"></span>
+        </button>
+      </div>
+
     </div>
 
-    <div class="rune-path">
-      <p>TALENT PATH 2</p>
-      <button class="rune" [ngClass]="{'active' : isSelected('ship')}" (click)="select('ship')" (contextmenu)="deselect('ship')"><span class="icon-ship"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('scuba')}" (click)="select('scuba')" (contextmenu)="deselect('scuba')"><span class="icon-scuba"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('bolt')}" (click)="select('bolt')" (contextmenu)="deselect('bolt')"><span class="icon-bolt"></span></button>
-      <button class="rune" [ngClass]="{'active' : isSelected('skull')}" (click)="select('skull')" (contextmenu)="deselect('skull')"><span class="icon-skull"></span></button>
+    <div class="points-container">
+      <div class="points">{{currentPoints}} / {{totalPoints}}</div>
+      <div class="points-label">Points Spent</div>
     </div>
 
   </div>
-
-  <div class="points-container">
-    <div class="points">{{currentPoints}} / {{totalPoints}}</div>
-    <div class="points-label">Points Spent</div>
-  </div>
-
-  <!-- <button *ngFor="let rune of runeList" class="rune" [ngClass]="{'active' : isSelected(rune.name)}" (click)="select(rune.name)" (contextmenu)="deselect('stack')">
-        <span [ngClass]="'icon-' + rune.name"></span>
-      </button> -->
-  <!-- <div class="rune-row">
-    <span>Talent Path 1</span>
-    <button class="rune" [ngClass]="{'active' : isSelected('stack')}" (click)="select('stack')" (contextmenu)="deselect('stack')"><span class="icon-stack"></span></button>
-  </div> -->
 
 </div>

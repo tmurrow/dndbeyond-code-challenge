@@ -11,9 +11,13 @@ export class AppComponent {
   totalPoints = 6;
   currentPoints = this.totalPoints;
   runeList = [];
+  runePath1 = [];
+  runePath2 = [];
 
   ngOnInit() {
     this.createRunes();
+    this.runePath1 = this.runeList.filter(rune => rune.talentPath === 1);
+    this.runePath2 = this.runeList.filter(rune => rune.talentPath === 2);
   }
 
   isSelected(runeName: string) {
