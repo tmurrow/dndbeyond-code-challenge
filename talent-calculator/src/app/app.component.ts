@@ -9,13 +9,19 @@ import { Talent } from './models/talent';
 export class AppComponent {
   title = 'talent-calculator';
   totalPoints = 6;
-  currentPoints = this.totalPoints;
+  // currentPoints = this.totalPoints;
+  spentPoints = 0;
   talentList = [];
   talentPath1 = [];
   talentPath2 = [];
 
   ngOnInit() {
-    this.createTalents();
+    if (localStorage.getItem('talentList') !== null) {
+      this.talentList = JSON.parse(localStorage.getItem('talentList'));
+      this.spentPoints = JSON.parse(localStorage.getItem('spentPoints'));
+    } else {
+      this.createTalents();
+    }
     this.talentPath1 = this.talentList.filter(talent => talent.talentPath === 1);
     this.talentPath2 = this.talentList.filter(talent => talent.talentPath === 2);
   }
@@ -28,10 +34,10 @@ export class AppComponent {
     let talent: Talent = this.getTalent(talentName);
     let previousTalent: Talent = this.getTalent(talent.previousTalent);
 
-    if (this.currentPoints > 0 && !talent.selected && (previousTalent === undefined || previousTalent.selected )) {
+    if (this.spentPoints < this.totalPoints && !talent.selected && (previousTalent === undefined || previousTalent.selected )) {
       talent.selected = true;
+      this.spentPoints += talent.cost;
       this.setTalent(talent);
-      this.currentPoints -= talent.cost;
     }
   }
 
@@ -40,10 +46,10 @@ export class AppComponent {
     let nextTalent: Talent = this.getTalent(talent.nextTalent);
     if (talent.selected && (nextTalent === undefined || !nextTalent.selected)) {
       talent.selected = false;
-      this.setTalent(talent);
-      if (this.currentPoints < this.totalPoints) {
-        this.currentPoints += talent.cost;
+      if (this.spentPoints > 0) {
+        this.spentPoints -= talent.cost;
       }
+      this.setTalent(talent);
     }
     return false;
   }
@@ -70,5 +76,6 @@ export class AppComponent {
   setTalent(updatedTalent: Talent) {
     this.talentList[this.talentList.indexOf(updatedTalent)] = updatedTalent;
     localStorage.setItem('talentList', JSON.stringify(this.talentList));
+    localStorage.setItem('spentPoints', JSON.stringify(this.spentPoints));
   }
 }
