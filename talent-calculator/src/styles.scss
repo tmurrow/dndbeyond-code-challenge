@@ -6,37 +6,39 @@
 html,
 body {
   height: 100%;
-  margin: 0px;
-  padding: 0px;
+  margin: 0rem;
+  padding: 0rem;
   overflow: auto;
 }
 
 body {
-  color: $text-color;
+  @include page-background;
+  color: $site-color-light;
   font-family: $font-family;
   text-align: center;
-  @include page-background;
 
   @media (max-width: $breakpoint-medium) {
+    // Use a variant of the background image in portrait orientation
+    // to make the background look better on smaller devices
     background-image: $background-file-portrait;
   }
-}
 
-h2 {
-  font-weight: 600;
-  margin: 0px;
-}
+  .header {
+    background-color: rgba($site-color-grey, .25);
+    margin: 1.2rem 1.2rem;
+    padding: .25rem;
 
-header {
-  background-color: rgba(66,66,66,.25);
-  margin: 1.2rem 1.2rem;
-  padding: .25rem;
+    @media (max-width: $breakpoint-medium) {
+      font-size: .8rem;
+    }
 
-  @media (max-width: $breakpoint-medium) {
-    font-size: .8rem;
-  }
+    @media (max-width: $breakpoint-small) {
+      font-size: .7rem;
+    }
 
-  @media (max-width: $breakpoint-small) {
-    font-size: .7rem;
+    .header__title {
+      font-weight: 600;
+      margin: 0rem;
+    }
   }
 }

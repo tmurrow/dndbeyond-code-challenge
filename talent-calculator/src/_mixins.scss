@@ -1,6 +1,8 @@
 @import '_variables';
 
+// --- Page background styles ---
 @mixin page-background {
+  background: $site-color-background;
   background-image: $background-file;
   background-repeat: no-repeat;
   background-size: cover;
@@ -8,28 +10,56 @@
   background-attachment: fixed;
 }
 
-@mixin gradient-background ($shadow-color, $highlight-color) {
-  background: $shadow-color;
-  background: -webkit-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
-  background: -o-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
-  background: linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+// --- Flexbox with centered items ---
+@mixin flexbox-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@mixin talent-connection ($is-active: false, $is-animated: false) {
+// --- Talent background gradient styles ---
+// @param {color} $main-color: Color that shows up on most of the background (top and bottom)
+// @param {color} $darker-color: Color that shows up towards the middle of the gradient (the "shadow");
+@mixin talent-gradient-background ($main-color, $darker-color) {
+  background: $main-color;
+  background: -webkit-linear-gradient($main-color 0%, $main-color 49%, $darker-color 51%, $main-color 100%);
+  background: -o-linear-gradient($main-color 0%, $main-color 49%, $darker-color 51%, $main-color 100%);
+  background: linear-gradient($main-color 0%, $main-color 49%, $darker-color 51%, $main-color 100%);
+}
+
+// --- Talent box shadow styles ---
+// @param {color} $color: Color to give the box-shadow
+@mixin talent-box-shadow ($shadow-color) {
+  -webkit-box-shadow: 0px 0px 5px 0px rgba($shadow-color, 0.75);
+  -moz-box-shadow: 0px 0px 5px 0px rgba($shadow-color, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba($shadow-color, 0.75);
+}
+
+// --- Links between talents ---
+// Appear horizontally on larger screens and vertically on smaller screens
+// @param {boolean} $is-active: Whether the link is connecting a selected talent or not
+// @param {boolean} $is-animated: Whether the link is animating or not
+@mixin talent-link ($is-active: false, $is-animated: false) {
   content: '';
-  background-color: rgba($connection-color, .25);
-  border: 2px solid rgba($connection-color, .25);
+  background-color: $site-color-grey;
+  background-color: rgba($site-color-grey, .25);
+  border: 2px solid $site-color-grey;
+  border-color: rgba($site-color-grey, .25);
   position: absolute;
+  // Horizontal dimensions; width as the long edge (length) and height as the short edge (width)
+  height: $talent-link-width;
+  width: $talent-link-length;
+  // Use margin to offset the starting position of the link
+  margin-top: $talent-link-width-offset;
+  margin-left: $talent-link-length-offset;
   z-index: -1;
-  margin-top: $connection-width-offset;
-  margin-left: $connection-length-offset;
-  height: $connection-width;
-  width: $connection-length;
 
   @media (max-width: $breakpoint-medium) {
-    margin-top: $connection-static-length-offset;
-    margin-left: $connection-width-offset;
-    height: $connection-static-length;
-    width: $connection-width;
+    // Swap the dimensions; height as the long edge (length) and width as the short edge (width)
+    height: $talent-link-vertical-length;
+    width: $talent-link-width;
+    // Swap margin offsets to match shape and position of now-vertical links
+    margin-top: $talent-link-vertical-length-offset;
+    margin-left: $talent-link-width-offset;
   }
 }
