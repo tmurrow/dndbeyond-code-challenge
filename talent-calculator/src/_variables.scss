@@ -1,0 +1,37 @@
+// SCSS Variables
+
+// --- Page background ---
+$background-file: url('/assets/talent-calc-bg.png');
+$background-file-portrait: url('/assets/talent-calc-bg-portrait.png');
+
+// --- Screen breakpoints ---
+$breakpoint-large: 1200px;
+$breakpoint-medium: 768px;
+$breakpoint-small: 480px;
+
+// --- Fonts ---
+$font-family: 'Open Sans', sans-serif;
+
+// --- Colors ---
+$site-color-light: white;
+$site-color-dark: black;
+$site-color-grey: #4b4b4b;
+$site-color-light-grey: lighten($site-color-grey, 10%);
+$site-color-blue: #6eadef;
+$site-color-dark-blue: desaturate(darken($site-color-blue, 40%), 40%);
+$site-color-background: #090e12;
+
+// --- Talent icons ---
+$icon-file: url('/assets/talent-icons-sprite.png');
+// List of all talent icons
+$icons: 'stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull';
+$icon-size: 50px;
+$icon-border-width: 8px;
+
+// --- Links between talents ---
+$talent-link-width: 12px;
+$talent-link-length: 10vw; // Use vw here as I want the links to resize relative to the screen height
+$talent-link-vertical-length: 15vh; // Use vw here as I want the links to resize relative to the screen width
+$talent-link-length-offset: -($talent-link-length);
+$talent-link-vertical-length-offset: -($talent-link-vertical-length);
+$talent-link-width-offset: -($talent-link-width / 2);

@@ -1,0 +1,35 @@
+<div>
+  <header class="header">
+    <h2 class="header__title">TitanStar Legends - Rune Mastery Loadout Talent Calculator 9000</h2>
+  </header>
+
+  <div class="talent-calculator">
+    <div class="talent-tree">
+
+      <div class="talent-path">
+        <div class="talent-path__title">
+          <span>TALENT PATH 1</span>
+        </div>
+        <button class="talent" *ngFor="let talent of talentPath1" [ngClass]="{'talent--active' : isSelected(talent.name)}" (click)="select(talent.name)" (contextmenu)="deselect(talent.name)">
+          <span [ngClass]="'icon-' + talent.name"></span>
+        </button>
+      </div>
+
+      <div class="talent-path">
+        <div class="talent-path__title">
+          <span>TALENT PATH 2</span>
+        </div>
+        <button class="talent" *ngFor="let talent of talentPath2" [ngClass]="{'talent--active' : isSelected(talent.name)}" (click)="select(talent.name)" (contextmenu)="deselect(talent.name)">
+          <span [ngClass]="'icon-' + talent.name"></span>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="points">
+      <div class="points__value">{{spentPoints}} / {{totalPoints}}</div>
+      <div class="points__label">Points Spent</div>
+    </div>
+
+  </div>
+</div>
