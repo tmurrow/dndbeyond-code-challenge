@@ -1,0 +1,25 @@
+$background-file: url('/assets/talent-calc-bg.png');
+$background-file-portrait: url('/assets/talent-calc-bg-portrait.png');
+
+$icon-file: url('/assets/talent-icons-sprite.png');
+$icons: 'stack', 'utensils', 'cake', 'crown', 'ship', 'scuba', 'bolt', 'skull';
+$icon-size: 50px;
+$icon-border-width: 8px;
+
+$connection-length: 10vw;
+$connection-static-length: 10vh;
+$connection-width: 12px;
+$connection-length-offset: -($connection-length);
+$connection-static-length-offset: -80px;
+$connection-width-offset: -($connection-width / 2);
+$connection-color: rgb(66,66,66);
+
+$text-color: white;
+$font-family: 'Open Sans', sans-serif;
+$breakpoint-medium: 768px;
+$breakpoint-small: 480px;
+
+$active-gradient-highlight: rgba(36,58,78,1);
+$active-gradient-shadow: rgba(108,160,214,1);
+$inactive-gradient-highlight: rgba(66,66,66,1);
+$inactive-gradient-shadow: rgba(87,87,87,1);

@@ -1,0 +1,35 @@
+@import '_variables';
+
+@mixin page-background {
+  background-image: $background-file;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+@mixin gradient-background ($shadow-color, $highlight-color) {
+  background: $shadow-color;
+  background: -webkit-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+  background: -o-linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+  background: linear-gradient($shadow-color 0%, $shadow-color 49%, $highlight-color 51%, $shadow-color 100%);
+}
+
+@mixin talent-connection ($is-active: false, $is-animated: false) {
+  content: '';
+  background-color: rgba($connection-color, .25);
+  border: 2px solid rgba($connection-color, .25);
+  position: absolute;
+  z-index: -1;
+  margin-top: $connection-width-offset;
+  margin-left: $connection-length-offset;
+  height: $connection-width;
+  width: $connection-length;
+
+  @media (max-width: $breakpoint-medium) {
+    margin-top: $connection-static-length-offset;
+    margin-left: $connection-width-offset;
+    height: $connection-static-length;
+    width: $connection-width;
+  }
+}

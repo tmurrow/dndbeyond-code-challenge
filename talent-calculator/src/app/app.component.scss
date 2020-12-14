@@ -1,0 +1,140 @@
+@import '../_variables';
+@import '../_mixins';
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.talent-calculator {
+  @include flex-center;
+  flex-direction: row;
+  height: 100%;
+
+  @media (max-width: $breakpoint-medium) {
+    flex-direction: column-reverse;
+  }
+
+  .points-container {
+    background-color: rgba(0,0,0,.4);
+    border: 1px solid rgba(66,66,66, .25);
+    padding: 1rem 1.75rem;
+    margin: .5rem 4rem;
+    font-size: 1.5rem;
+
+    @media (max-width: $breakpoint-medium) {
+      font-size: 1rem;
+      margin: 0rem;
+    }
+  }
+
+  .points-label {
+    color: $active-gradient-highlight;
+  }
+
+  .talent-tree {
+    @include flex-center;
+    flex-direction: column;
+    min-width: 50%;
+    height: 100%;
+
+    @media (max-width: $breakpoint-medium) {
+      height: 100%;
+      flex-direction: row;
+    }
+
+    .talent-path {
+      @include flex-center;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+      margin: 1.5rem 0rem;
+      @media (max-width: $breakpoint-medium) {
+        margin: 0rem 1.5rem;
+        height: 50vh;
+        flex-direction: column;
+      }
+
+      p {
+        font-size: .75rem;
+        @media (max-width: $breakpoint-medium) {
+          font-size: .6rem;
+        }
+      }
+
+      .talent {
+        position: relative;
+        border: none;
+        min-height: $icon-size + $icon-border-width;
+        width: $icon-size + $icon-border-width;
+        border: 0em;
+        outline: 0em;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+        @include gradient-background($inactive-gradient-shadow, $inactive-gradient-highlight);
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        /* Connecting lines */
+        &:not(:nth-child(2)) {
+          &::before {
+            @include talent-connection;
+          }
+          /* Animate progress */
+          &::after {
+            @include talent-connection;
+            background-color: rgba($connection-color, .5);
+            border-color: rgba($connection-color, 1);
+            width: 0em;
+            transition: width 0.15s ease-out;
+
+            @media (max-width: $breakpoint-medium) {
+              height: 0em;
+              transition: height 0.15s ease-out;
+            }
+          }
+        }
+
+        &.active {
+          box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.25);
+          @include gradient-background($active-gradient-shadow, $active-gradient-highlight);
+          // animation: select-rune 0.5s ease normal;
+          // animation-fill-mode: none;
+
+          &:not(:nth-child(2))::after {
+            @include talent-connection;
+            background-color: rgba($connection-color, .5);
+            border-color: rgba($connection-color, 1);
+          }
+        }
+
+        // Icon styles
+        [class^="icon-"] {
+          background-image: $icon-file;
+          background-repeat: no-repeat;
+          height: $icon-size;
+          width: $icon-size;
+          z-index: 1;
+          position: absolute;
+          margin-top: ($icon-size/-2);
+          margin-left: ($icon-size/-2);
+        }
+
+        @each $icon in $icons {
+          $icon-index: index($icons, $icon)-1;
+          $icon-position: (-50 * $icon-index) * 1px;
+          .icon-#{$icon} {
+            background-position: $icon-position -50px;
+          }
+
+          &.active .icon-#{$icon},
+          &:hover .icon-#{$icon} {
+            background-position: $icon-position 0px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Rune } from './models/rune';
+import { Talent } from './models/talent';
 
 @Component({
   selector: 'app-root',
@@ -10,65 +10,65 @@ export class AppComponent {
   title = 'talent-calculator';
   totalPoints = 6;
   currentPoints = this.totalPoints;
-  runeList = [];
-  runePath1 = [];
-  runePath2 = [];
+  talentList = [];
+  talentPath1 = [];
+  talentPath2 = [];
 
   ngOnInit() {
-    this.createRunes();
-    this.runePath1 = this.runeList.filter(rune => rune.talentPath === 1);
-    this.runePath2 = this.runeList.filter(rune => rune.talentPath === 2);
+    this.createTalents();
+    this.talentPath1 = this.talentList.filter(talent => talent.talentPath === 1);
+    this.talentPath2 = this.talentList.filter(talent => talent.talentPath === 2);
   }
 
-  isSelected(runeName: string) {
-    return this.getRune(runeName).selected;
+  isSelected(talentName: string) {
+    return this.getTalent(talentName).selected;
   }
 
-  select(runeName: string) {
-    let rune: Rune = this.getRune(runeName);
-    let previousRune: Rune = this.getRune(rune.previousRune);
+  select(talentName: string) {
+    let talent: Talent = this.getTalent(talentName);
+    let previousTalent: Talent = this.getTalent(talent.previousTalent);
 
-    if (this.currentPoints > 0 && !rune.selected && (previousRune === undefined || previousRune.selected )) {
-      rune.selected = true;
-      this.setRune(rune);
-      this.currentPoints -= rune.cost;
+    if (this.currentPoints > 0 && !talent.selected && (previousTalent === undefined || previousTalent.selected )) {
+      talent.selected = true;
+      this.setTalent(talent);
+      this.currentPoints -= talent.cost;
     }
   }
 
-  deselect(runeName: string) {
-    let rune: Rune = this.getRune(runeName);
-    let nextRune: Rune = this.getRune(rune.nextRune);
-    if (rune.selected && (nextRune === undefined || !nextRune.selected)) {
-      rune.selected = false;
-      this.setRune(rune);
+  deselect(talentName: string) {
+    let talent: Talent = this.getTalent(talentName);
+    let nextTalent: Talent = this.getTalent(talent.nextTalent);
+    if (talent.selected && (nextTalent === undefined || !nextTalent.selected)) {
+      talent.selected = false;
+      this.setTalent(talent);
       if (this.currentPoints < this.totalPoints) {
-        this.currentPoints += rune.cost;
+        this.currentPoints += talent.cost;
       }
     }
     return false;
   }
 
-  createRunes() {
-    this.runeList.push(new Rune('stack', 1, '', 'utensils'));
-    this.runeList.push(new Rune('utensils', 1, 'stack', 'cake'));
-    this.runeList.push(new Rune('cake', 1, 'utensils', 'crown'));
-    this.runeList.push(new Rune('crown', 1, 'cake', ''));
+  createTalents() {
+    this.talentList.push(new Talent('stack', 1, '', 'utensils'));
+    this.talentList.push(new Talent('utensils', 1, 'stack', 'cake'));
+    this.talentList.push(new Talent('cake', 1, 'utensils', 'crown'));
+    this.talentList.push(new Talent('crown', 1, 'cake', ''));
 
-    this.runeList.push(new Rune('ship', 2, '', 'scuba'));
-    this.runeList.push(new Rune('scuba', 2, 'ship', 'bolt'));
-    this.runeList.push(new Rune('bolt', 2, 'scuba', 'skull'));
-    this.runeList.push(new Rune('skull', 2, 'bolt', ''));
-    if (localStorage.getItem('runeList') === null) {
-      localStorage.setItem('runeList', JSON.stringify(this.runeList));
+    this.talentList.push(new Talent('ship', 2, '', 'scuba'));
+    this.talentList.push(new Talent('scuba', 2, 'ship', 'bolt'));
+    this.talentList.push(new Talent('bolt', 2, 'scuba', 'skull'));
+    this.talentList.push(new Talent('skull', 2, 'bolt', ''));
+    if (localStorage.getItem('talentList') === null) {
+      localStorage.setItem('talentList', JSON.stringify(this.talentList));
     }
   }
 
-  getRune(name: string) {
-    return this.runeList.find(r => r.name === name);
+  getTalent(name: string) {
+    return this.talentList.find(r => r.name === name);
   }
 
-  setRune(updatedRune: Rune) {
-    this.runeList[this.runeList.indexOf(updatedRune)] = updatedRune;
-    localStorage.setItem('runeList', JSON.stringify(this.runeList));
+  setTalent(updatedTalent: Talent) {
+    this.talentList[this.talentList.indexOf(updatedTalent)] = updatedTalent;
+    localStorage.setItem('talentList', JSON.stringify(this.talentList));
   }
 }
